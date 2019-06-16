@@ -1,0 +1,1600 @@
+State 19 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: input $end
+
+    1 input: %empty
+    2      | stmt input
+
+    3 stmt: '\n'
+    4     | EXIT
+    5     | ID_UNDEF
+    6     | expr_n
+    7     | expr_b
+
+    8 id: ID_NUMBER
+    9   | ID_BOOL
+   10   | ID_UNDEF
+
+   11 assignment_n: id '=' expr_n
+   12             | FUNCTION '=' expr_n
+   13             | '#' assignment_n
+   14             | '#' ID_NUMBER
+
+   15 assignment_b: id '=' expr_b
+   16             | FUNCTION '=' expr_b
+   17             | '#' assignment_b
+   18             | '#' ID_BOOL
+
+   19 func: FUNCTION FUNC_CALL expr_n
+   20     | id FUNC_CALL expr_n
+
+   21 expr_n: expr_n '+' expr_n
+   22       | expr_n '-' expr_n
+   23       | expr_n '/' expr_n
+   24       | expr_n '%' expr_n
+   25       | expr_n '*' expr_n
+   26       | expr_n '^' expr_n
+   27       | '(' expr_n ')'
+   28       | NUMBER
+   29       | ID_NUMBER
+   30       | assignment_n
+   31       | func
+   32       | '-' expr_n
+
+   33 expr_b: BOOL
+   34       | ID_BOOL
+   35       | assignment_b
+   36       | comp
+   37       | expr_b AND expr_b
+   38       | expr_b OR expr_b
+   39       | '!' expr_b
+   40       | '(' expr_b ')'
+
+   41 comp: expr_n EQ expr_n
+   42     | expr_n NE expr_n
+   43     | expr_n GT expr_n
+   44     | expr_n GE expr_n
+   45     | expr_n LT expr_n
+   46     | expr_n LE expr_n
+   47     | expr_b EQ expr_b
+   48     | expr_b NE expr_b
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'\n' (10) 3
+'!' (33) 39
+'#' (35) 13 14 17 18
+'%' (37) 24
+'(' (40) 27 40
+')' (41) 27 40
+'*' (42) 25
+'+' (43) 21
+'-' (45) 22 32
+'/' (47) 23
+'=' (61) 11 12 15 16
+'^' (94) 26
+error (256)
+BOOL (258) 33
+NUMBER (259) 28
+ID_BOOL (260) 9 18 34
+ID_NUMBER (261) 8 14 29
+ID_UNDEF (262) 5 10
+FUNCTION (263) 12 16 19
+EXIT (264) 4
+AND (265) 37
+OR (266) 38
+EQ (267) 41 47
+NE (268) 42 48
+GT (269) 43
+GE (270) 44
+LT (271) 45
+LE (272) 46
+FUNC_CALL (273) 19 20
+UMINUS (274)
+
+
+Nonterminals, with rules where they appear
+
+$accept (32)
+    on left: 0
+input (33)
+    on left: 1 2, on right: 0 2
+stmt (34)
+    on left: 3 4 5 6 7, on right: 2
+id (35)
+    on left: 8 9 10, on right: 11 15 20
+assignment_n (36)
+    on left: 11 12 13 14, on right: 13 30
+assignment_b (37)
+    on left: 15 16 17 18, on right: 17 35
+func (38)
+    on left: 19 20, on right: 31
+expr_n (39)
+    on left: 21 22 23 24 25 26 27 28 29 30 31 32, on right: 6 11 12
+    19 20 21 22 23 24 25 26 27 32 41 42 43 44 45 46
+expr_b (40)
+    on left: 33 34 35 36 37 38 39 40, on right: 7 15 16 37 38 39 40
+    47 48
+comp (41)
+    on left: 41 42 43 44 45 46 47 48, on right: 36
+
+
+State 0
+
+    0 $accept: . input $end
+
+    BOOL       shift, and go to state 1
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 3
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 5
+    FUNCTION   shift, and go to state 6
+    EXIT       shift, and go to state 7
+    '-'        shift, and go to state 8
+    '!'        shift, and go to state 9
+    '\n'       shift, and go to state 10
+    '#'        shift, and go to state 11
+    '('        shift, and go to state 12
+
+    $default  reduce using rule 1 (input)
+
+    input         go to state 13
+    stmt          go to state 14
+    id            go to state 15
+    assignment_n  go to state 16
+    assignment_b  go to state 17
+    func          go to state 18
+    expr_n        go to state 19
+    expr_b        go to state 20
+    comp          go to state 21
+
+
+State 1
+
+   33 expr_b: BOOL .
+
+    $default  reduce using rule 33 (expr_b)
+
+
+State 2
+
+   28 expr_n: NUMBER .
+
+    $default  reduce using rule 28 (expr_n)
+
+
+State 3
+
+    9 id: ID_BOOL .
+   34 expr_b: ID_BOOL .
+
+    '='        reduce using rule 9 (id)
+    FUNC_CALL  reduce using rule 9 (id)
+    $default   reduce using rule 34 (expr_b)
+
+
+State 4
+
+    8 id: ID_NUMBER .
+   29 expr_n: ID_NUMBER .
+
+    '='        reduce using rule 8 (id)
+    FUNC_CALL  reduce using rule 8 (id)
+    $default   reduce using rule 29 (expr_n)
+
+
+State 5
+
+    5 stmt: ID_UNDEF .
+   10 id: ID_UNDEF .
+
+    '='        reduce using rule 10 (id)
+    FUNC_CALL  reduce using rule 10 (id)
+    $default   reduce using rule 5 (stmt)
+
+
+State 6
+
+   12 assignment_n: FUNCTION . '=' expr_n
+   16 assignment_b: FUNCTION . '=' expr_b
+   19 func: FUNCTION . FUNC_CALL expr_n
+
+    '='        shift, and go to state 22
+    FUNC_CALL  shift, and go to state 23
+
+
+State 7
+
+    4 stmt: EXIT .
+
+    $default  reduce using rule 4 (stmt)
+
+
+State 8
+
+   32 expr_n: '-' . expr_n
+
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 24
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 26
+    '-'        shift, and go to state 8
+    '#'        shift, and go to state 27
+    '('        shift, and go to state 28
+
+    id            go to state 29
+    assignment_n  go to state 16
+    func          go to state 18
+    expr_n        go to state 30
+
+
+State 9
+
+   39 expr_b: '!' . expr_b
+
+    BOOL       shift, and go to state 1
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 3
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 6
+    '-'        shift, and go to state 8
+    '!'        shift, and go to state 9
+    '#'        shift, and go to state 11
+    '('        shift, and go to state 12
+
+    id            go to state 15
+    assignment_n  go to state 16
+    assignment_b  go to state 17
+    func          go to state 18
+    expr_n        go to state 31
+    expr_b        go to state 32
+    comp          go to state 21
+
+
+State 10
+
+    3 stmt: '\n' .
+
+    $default  reduce using rule 3 (stmt)
+
+
+State 11
+
+   13 assignment_n: '#' . assignment_n
+   14             | '#' . ID_NUMBER
+   17 assignment_b: '#' . assignment_b
+   18             | '#' . ID_BOOL
+
+    ID_BOOL    shift, and go to state 33
+    ID_NUMBER  shift, and go to state 34
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 35
+    '#'        shift, and go to state 11
+
+    id            go to state 36
+    assignment_n  go to state 37
+    assignment_b  go to state 38
+
+
+State 12
+
+   27 expr_n: '(' . expr_n ')'
+   40 expr_b: '(' . expr_b ')'
+
+    BOOL       shift, and go to state 1
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 3
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 6
+    '-'        shift, and go to state 8
+    '!'        shift, and go to state 9
+    '#'        shift, and go to state 11
+    '('        shift, and go to state 12
+
+    id            go to state 15
+    assignment_n  go to state 16
+    assignment_b  go to state 17
+    func          go to state 18
+    expr_n        go to state 39
+    expr_b        go to state 40
+    comp          go to state 21
+
+
+State 13
+
+    0 $accept: input . $end
+
+    $end  shift, and go to state 41
+
+
+State 14
+
+    2 input: stmt . input
+
+    BOOL       shift, and go to state 1
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 3
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 5
+    FUNCTION   shift, and go to state 6
+    EXIT       shift, and go to state 7
+    '-'        shift, and go to state 8
+    '!'        shift, and go to state 9
+    '\n'       shift, and go to state 10
+    '#'        shift, and go to state 11
+    '('        shift, and go to state 12
+
+    $default  reduce using rule 1 (input)
+
+    input         go to state 42
+    stmt          go to state 14
+    id            go to state 15
+    assignment_n  go to state 16
+    assignment_b  go to state 17
+    func          go to state 18
+    expr_n        go to state 19
+    expr_b        go to state 20
+    comp          go to state 21
+
+
+State 15
+
+   11 assignment_n: id . '=' expr_n
+   15 assignment_b: id . '=' expr_b
+   20 func: id . FUNC_CALL expr_n
+
+    '='        shift, and go to state 43
+    FUNC_CALL  shift, and go to state 44
+
+
+State 16
+
+   30 expr_n: assignment_n .
+
+    $default  reduce using rule 30 (expr_n)
+
+
+State 17
+
+   35 expr_b: assignment_b .
+
+    $default  reduce using rule 35 (expr_b)
+
+
+State 18
+
+   31 expr_n: func .
+
+    $default  reduce using rule 31 (expr_n)
+
+
+State 19
+
+    6 stmt: expr_n .
+   21 expr_n: expr_n . '+' expr_n
+   22       | expr_n . '-' expr_n
+   23       | expr_n . '/' expr_n
+   24       | expr_n . '%' expr_n
+   25       | expr_n . '*' expr_n
+   26       | expr_n . '^' expr_n
+   41 comp: expr_n . EQ expr_n
+   42     | expr_n . NE expr_n
+   43     | expr_n . GT expr_n
+   44     | expr_n . GE expr_n
+   45     | expr_n . LT expr_n
+   46     | expr_n . LE expr_n
+
+    EQ   shift, and go to state 45
+    NE   shift, and go to state 46
+    GT   shift, and go to state 47
+    GE   shift, and go to state 48
+    LT   shift, and go to state 49
+    LE   shift, and go to state 50
+    '+'  shift, and go to state 51
+    '-'  shift, and go to state 52
+    '/'  shift, and go to state 53
+    '*'  shift, and go to state 54
+    '%'  shift, and go to state 55
+    '^'  shift, and go to state 56
+
+    '-'       [reduce using rule 6 (stmt)]
+    $default  reduce using rule 6 (stmt)
+
+
+State 20
+
+    7 stmt: expr_b .
+   37 expr_b: expr_b . AND expr_b
+   38       | expr_b . OR expr_b
+   47 comp: expr_b . EQ expr_b
+   48     | expr_b . NE expr_b
+
+    AND  shift, and go to state 57
+    OR   shift, and go to state 58
+    EQ   shift, and go to state 59
+    NE   shift, and go to state 60
+
+    $default  reduce using rule 7 (stmt)
+
+
+State 21
+
+   36 expr_b: comp .
+
+    $default  reduce using rule 36 (expr_b)
+
+
+State 22
+
+   12 assignment_n: FUNCTION '=' . expr_n
+   16 assignment_b: FUNCTION '=' . expr_b
+
+    BOOL       shift, and go to state 1
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 3
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 6
+    '-'        shift, and go to state 8
+    '!'        shift, and go to state 9
+    '#'        shift, and go to state 11
+    '('        shift, and go to state 12
+
+    id            go to state 15
+    assignment_n  go to state 16
+    assignment_b  go to state 17
+    func          go to state 18
+    expr_n        go to state 61
+    expr_b        go to state 62
+    comp          go to state 21
+
+
+State 23
+
+   19 func: FUNCTION FUNC_CALL . expr_n
+
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 24
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 26
+    '-'        shift, and go to state 8
+    '#'        shift, and go to state 27
+    '('        shift, and go to state 28
+
+    id            go to state 29
+    assignment_n  go to state 16
+    func          go to state 18
+    expr_n        go to state 63
+
+
+State 24
+
+    9 id: ID_BOOL .
+
+    $default  reduce using rule 9 (id)
+
+
+State 25
+
+   10 id: ID_UNDEF .
+
+    $default  reduce using rule 10 (id)
+
+
+State 26
+
+   12 assignment_n: FUNCTION . '=' expr_n
+   19 func: FUNCTION . FUNC_CALL expr_n
+
+    '='        shift, and go to state 64
+    FUNC_CALL  shift, and go to state 23
+
+
+State 27
+
+   13 assignment_n: '#' . assignment_n
+   14             | '#' . ID_NUMBER
+
+    ID_BOOL    shift, and go to state 24
+    ID_NUMBER  shift, and go to state 34
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 65
+    '#'        shift, and go to state 27
+
+    id            go to state 66
+    assignment_n  go to state 37
+
+
+State 28
+
+   27 expr_n: '(' . expr_n ')'
+
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 24
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 26
+    '-'        shift, and go to state 8
+    '#'        shift, and go to state 27
+    '('        shift, and go to state 28
+
+    id            go to state 29
+    assignment_n  go to state 16
+    func          go to state 18
+    expr_n        go to state 67
+
+
+State 29
+
+   11 assignment_n: id . '=' expr_n
+   20 func: id . FUNC_CALL expr_n
+
+    '='        shift, and go to state 68
+    FUNC_CALL  shift, and go to state 44
+
+
+State 30
+
+   21 expr_n: expr_n . '+' expr_n
+   22       | expr_n . '-' expr_n
+   23       | expr_n . '/' expr_n
+   24       | expr_n . '%' expr_n
+   25       | expr_n . '*' expr_n
+   26       | expr_n . '^' expr_n
+   32       | '-' expr_n .
+
+    $default  reduce using rule 32 (expr_n)
+
+
+State 31
+
+   21 expr_n: expr_n . '+' expr_n
+   22       | expr_n . '-' expr_n
+   23       | expr_n . '/' expr_n
+   24       | expr_n . '%' expr_n
+   25       | expr_n . '*' expr_n
+   26       | expr_n . '^' expr_n
+   41 comp: expr_n . EQ expr_n
+   42     | expr_n . NE expr_n
+   43     | expr_n . GT expr_n
+   44     | expr_n . GE expr_n
+   45     | expr_n . LT expr_n
+   46     | expr_n . LE expr_n
+
+    EQ   shift, and go to state 45
+    NE   shift, and go to state 46
+    GT   shift, and go to state 47
+    GE   shift, and go to state 48
+    LT   shift, and go to state 49
+    LE   shift, and go to state 50
+    '+'  shift, and go to state 51
+    '-'  shift, and go to state 52
+    '/'  shift, and go to state 53
+    '*'  shift, and go to state 54
+    '%'  shift, and go to state 55
+    '^'  shift, and go to state 56
+
+
+State 32
+
+   37 expr_b: expr_b . AND expr_b
+   38       | expr_b . OR expr_b
+   39       | '!' expr_b .
+   47 comp: expr_b . EQ expr_b
+   48     | expr_b . NE expr_b
+
+    $default  reduce using rule 39 (expr_b)
+
+
+State 33
+
+    9 id: ID_BOOL .
+   18 assignment_b: '#' ID_BOOL .
+
+    '='       reduce using rule 9 (id)
+    $default  reduce using rule 18 (assignment_b)
+
+
+State 34
+
+    8 id: ID_NUMBER .
+   14 assignment_n: '#' ID_NUMBER .
+
+    '='       reduce using rule 8 (id)
+    $default  reduce using rule 14 (assignment_n)
+
+
+State 35
+
+   12 assignment_n: FUNCTION . '=' expr_n
+   16 assignment_b: FUNCTION . '=' expr_b
+
+    '='  shift, and go to state 22
+
+
+State 36
+
+   11 assignment_n: id . '=' expr_n
+   15 assignment_b: id . '=' expr_b
+
+    '='  shift, and go to state 43
+
+
+State 37
+
+   13 assignment_n: '#' assignment_n .
+
+    $default  reduce using rule 13 (assignment_n)
+
+
+State 38
+
+   17 assignment_b: '#' assignment_b .
+
+    $default  reduce using rule 17 (assignment_b)
+
+
+State 39
+
+   21 expr_n: expr_n . '+' expr_n
+   22       | expr_n . '-' expr_n
+   23       | expr_n . '/' expr_n
+   24       | expr_n . '%' expr_n
+   25       | expr_n . '*' expr_n
+   26       | expr_n . '^' expr_n
+   27       | '(' expr_n . ')'
+   41 comp: expr_n . EQ expr_n
+   42     | expr_n . NE expr_n
+   43     | expr_n . GT expr_n
+   44     | expr_n . GE expr_n
+   45     | expr_n . LT expr_n
+   46     | expr_n . LE expr_n
+
+    EQ   shift, and go to state 45
+    NE   shift, and go to state 46
+    GT   shift, and go to state 47
+    GE   shift, and go to state 48
+    LT   shift, and go to state 49
+    LE   shift, and go to state 50
+    '+'  shift, and go to state 51
+    '-'  shift, and go to state 52
+    '/'  shift, and go to state 53
+    '*'  shift, and go to state 54
+    '%'  shift, and go to state 55
+    '^'  shift, and go to state 56
+    ')'  shift, and go to state 69
+
+
+State 40
+
+   37 expr_b: expr_b . AND expr_b
+   38       | expr_b . OR expr_b
+   40       | '(' expr_b . ')'
+   47 comp: expr_b . EQ expr_b
+   48     | expr_b . NE expr_b
+
+    AND  shift, and go to state 57
+    OR   shift, and go to state 58
+    EQ   shift, and go to state 59
+    NE   shift, and go to state 60
+    ')'  shift, and go to state 70
+
+
+State 41
+
+    0 $accept: input $end .
+
+    $default  accept
+
+
+State 42
+
+    2 input: stmt input .
+
+    $default  reduce using rule 2 (input)
+
+
+State 43
+
+   11 assignment_n: id '=' . expr_n
+   15 assignment_b: id '=' . expr_b
+
+    BOOL       shift, and go to state 1
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 3
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 6
+    '-'        shift, and go to state 8
+    '!'        shift, and go to state 9
+    '#'        shift, and go to state 11
+    '('        shift, and go to state 12
+
+    id            go to state 15
+    assignment_n  go to state 16
+    assignment_b  go to state 17
+    func          go to state 18
+    expr_n        go to state 71
+    expr_b        go to state 72
+    comp          go to state 21
+
+
+State 44
+
+   20 func: id FUNC_CALL . expr_n
+
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 24
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 26
+    '-'        shift, and go to state 8
+    '#'        shift, and go to state 27
+    '('        shift, and go to state 28
+
+    id            go to state 29
+    assignment_n  go to state 16
+    func          go to state 18
+    expr_n        go to state 73
+
+
+State 45
+
+   41 comp: expr_n EQ . expr_n
+
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 24
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 26
+    '-'        shift, and go to state 8
+    '#'        shift, and go to state 27
+    '('        shift, and go to state 28
+
+    id            go to state 29
+    assignment_n  go to state 16
+    func          go to state 18
+    expr_n        go to state 74
+
+
+State 46
+
+   42 comp: expr_n NE . expr_n
+
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 24
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 26
+    '-'        shift, and go to state 8
+    '#'        shift, and go to state 27
+    '('        shift, and go to state 28
+
+    id            go to state 29
+    assignment_n  go to state 16
+    func          go to state 18
+    expr_n        go to state 75
+
+
+State 47
+
+   43 comp: expr_n GT . expr_n
+
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 24
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 26
+    '-'        shift, and go to state 8
+    '#'        shift, and go to state 27
+    '('        shift, and go to state 28
+
+    id            go to state 29
+    assignment_n  go to state 16
+    func          go to state 18
+    expr_n        go to state 76
+
+
+State 48
+
+   44 comp: expr_n GE . expr_n
+
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 24
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 26
+    '-'        shift, and go to state 8
+    '#'        shift, and go to state 27
+    '('        shift, and go to state 28
+
+    id            go to state 29
+    assignment_n  go to state 16
+    func          go to state 18
+    expr_n        go to state 77
+
+
+State 49
+
+   45 comp: expr_n LT . expr_n
+
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 24
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 26
+    '-'        shift, and go to state 8
+    '#'        shift, and go to state 27
+    '('        shift, and go to state 28
+
+    id            go to state 29
+    assignment_n  go to state 16
+    func          go to state 18
+    expr_n        go to state 78
+
+
+State 50
+
+   46 comp: expr_n LE . expr_n
+
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 24
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 26
+    '-'        shift, and go to state 8
+    '#'        shift, and go to state 27
+    '('        shift, and go to state 28
+
+    id            go to state 29
+    assignment_n  go to state 16
+    func          go to state 18
+    expr_n        go to state 79
+
+
+State 51
+
+   21 expr_n: expr_n '+' . expr_n
+
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 24
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 26
+    '-'        shift, and go to state 8
+    '#'        shift, and go to state 27
+    '('        shift, and go to state 28
+
+    id            go to state 29
+    assignment_n  go to state 16
+    func          go to state 18
+    expr_n        go to state 80
+
+
+State 52
+
+   22 expr_n: expr_n '-' . expr_n
+
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 24
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 26
+    '-'        shift, and go to state 8
+    '#'        shift, and go to state 27
+    '('        shift, and go to state 28
+
+    id            go to state 29
+    assignment_n  go to state 16
+    func          go to state 18
+    expr_n        go to state 81
+
+
+State 53
+
+   23 expr_n: expr_n '/' . expr_n
+
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 24
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 26
+    '-'        shift, and go to state 8
+    '#'        shift, and go to state 27
+    '('        shift, and go to state 28
+
+    id            go to state 29
+    assignment_n  go to state 16
+    func          go to state 18
+    expr_n        go to state 82
+
+
+State 54
+
+   25 expr_n: expr_n '*' . expr_n
+
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 24
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 26
+    '-'        shift, and go to state 8
+    '#'        shift, and go to state 27
+    '('        shift, and go to state 28
+
+    id            go to state 29
+    assignment_n  go to state 16
+    func          go to state 18
+    expr_n        go to state 83
+
+
+State 55
+
+   24 expr_n: expr_n '%' . expr_n
+
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 24
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 26
+    '-'        shift, and go to state 8
+    '#'        shift, and go to state 27
+    '('        shift, and go to state 28
+
+    id            go to state 29
+    assignment_n  go to state 16
+    func          go to state 18
+    expr_n        go to state 84
+
+
+State 56
+
+   26 expr_n: expr_n '^' . expr_n
+
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 24
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 26
+    '-'        shift, and go to state 8
+    '#'        shift, and go to state 27
+    '('        shift, and go to state 28
+
+    id            go to state 29
+    assignment_n  go to state 16
+    func          go to state 18
+    expr_n        go to state 85
+
+
+State 57
+
+   37 expr_b: expr_b AND . expr_b
+
+    BOOL       shift, and go to state 1
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 3
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 6
+    '-'        shift, and go to state 8
+    '!'        shift, and go to state 9
+    '#'        shift, and go to state 11
+    '('        shift, and go to state 12
+
+    id            go to state 15
+    assignment_n  go to state 16
+    assignment_b  go to state 17
+    func          go to state 18
+    expr_n        go to state 31
+    expr_b        go to state 86
+    comp          go to state 21
+
+
+State 58
+
+   38 expr_b: expr_b OR . expr_b
+
+    BOOL       shift, and go to state 1
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 3
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 6
+    '-'        shift, and go to state 8
+    '!'        shift, and go to state 9
+    '#'        shift, and go to state 11
+    '('        shift, and go to state 12
+
+    id            go to state 15
+    assignment_n  go to state 16
+    assignment_b  go to state 17
+    func          go to state 18
+    expr_n        go to state 31
+    expr_b        go to state 87
+    comp          go to state 21
+
+
+State 59
+
+   47 comp: expr_b EQ . expr_b
+
+    BOOL       shift, and go to state 1
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 3
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 6
+    '-'        shift, and go to state 8
+    '!'        shift, and go to state 9
+    '#'        shift, and go to state 11
+    '('        shift, and go to state 12
+
+    id            go to state 15
+    assignment_n  go to state 16
+    assignment_b  go to state 17
+    func          go to state 18
+    expr_n        go to state 31
+    expr_b        go to state 88
+    comp          go to state 21
+
+
+State 60
+
+   48 comp: expr_b NE . expr_b
+
+    BOOL       shift, and go to state 1
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 3
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 6
+    '-'        shift, and go to state 8
+    '!'        shift, and go to state 9
+    '#'        shift, and go to state 11
+    '('        shift, and go to state 12
+
+    id            go to state 15
+    assignment_n  go to state 16
+    assignment_b  go to state 17
+    func          go to state 18
+    expr_n        go to state 31
+    expr_b        go to state 89
+    comp          go to state 21
+
+
+State 61
+
+   12 assignment_n: FUNCTION '=' expr_n .
+   21 expr_n: expr_n . '+' expr_n
+   22       | expr_n . '-' expr_n
+   23       | expr_n . '/' expr_n
+   24       | expr_n . '%' expr_n
+   25       | expr_n . '*' expr_n
+   26       | expr_n . '^' expr_n
+   41 comp: expr_n . EQ expr_n
+   42     | expr_n . NE expr_n
+   43     | expr_n . GT expr_n
+   44     | expr_n . GE expr_n
+   45     | expr_n . LT expr_n
+   46     | expr_n . LE expr_n
+
+    EQ   shift, and go to state 45
+    NE   shift, and go to state 46
+    GT   shift, and go to state 47
+    GE   shift, and go to state 48
+    LT   shift, and go to state 49
+    LE   shift, and go to state 50
+    '+'  shift, and go to state 51
+    '-'  shift, and go to state 52
+    '/'  shift, and go to state 53
+    '*'  shift, and go to state 54
+    '%'  shift, and go to state 55
+    '^'  shift, and go to state 56
+
+    $default  reduce using rule 12 (assignment_n)
+
+
+State 62
+
+   16 assignment_b: FUNCTION '=' expr_b .
+   37 expr_b: expr_b . AND expr_b
+   38       | expr_b . OR expr_b
+   47 comp: expr_b . EQ expr_b
+   48     | expr_b . NE expr_b
+
+    AND  shift, and go to state 57
+    OR   shift, and go to state 58
+    EQ   shift, and go to state 59
+    NE   shift, and go to state 60
+
+    $default  reduce using rule 16 (assignment_b)
+
+
+State 63
+
+   19 func: FUNCTION FUNC_CALL expr_n .
+   21 expr_n: expr_n . '+' expr_n
+   22       | expr_n . '-' expr_n
+   23       | expr_n . '/' expr_n
+   24       | expr_n . '%' expr_n
+   25       | expr_n . '*' expr_n
+   26       | expr_n . '^' expr_n
+
+    '+'  shift, and go to state 51
+    '-'  shift, and go to state 52
+    '/'  shift, and go to state 53
+    '*'  shift, and go to state 54
+    '%'  shift, and go to state 55
+    '^'  shift, and go to state 56
+
+    $default  reduce using rule 19 (func)
+
+
+State 64
+
+   12 assignment_n: FUNCTION '=' . expr_n
+
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 24
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 26
+    '-'        shift, and go to state 8
+    '#'        shift, and go to state 27
+    '('        shift, and go to state 28
+
+    id            go to state 29
+    assignment_n  go to state 16
+    func          go to state 18
+    expr_n        go to state 90
+
+
+State 65
+
+   12 assignment_n: FUNCTION . '=' expr_n
+
+    '='  shift, and go to state 64
+
+
+State 66
+
+   11 assignment_n: id . '=' expr_n
+
+    '='  shift, and go to state 68
+
+
+State 67
+
+   21 expr_n: expr_n . '+' expr_n
+   22       | expr_n . '-' expr_n
+   23       | expr_n . '/' expr_n
+   24       | expr_n . '%' expr_n
+   25       | expr_n . '*' expr_n
+   26       | expr_n . '^' expr_n
+   27       | '(' expr_n . ')'
+
+    '+'  shift, and go to state 51
+    '-'  shift, and go to state 52
+    '/'  shift, and go to state 53
+    '*'  shift, and go to state 54
+    '%'  shift, and go to state 55
+    '^'  shift, and go to state 56
+    ')'  shift, and go to state 69
+
+
+State 68
+
+   11 assignment_n: id '=' . expr_n
+
+    NUMBER     shift, and go to state 2
+    ID_BOOL    shift, and go to state 24
+    ID_NUMBER  shift, and go to state 4
+    ID_UNDEF   shift, and go to state 25
+    FUNCTION   shift, and go to state 26
+    '-'        shift, and go to state 8
+    '#'        shift, and go to state 27
+    '('        shift, and go to state 28
+
+    id            go to state 29
+    assignment_n  go to state 16
+    func          go to state 18
+    expr_n        go to state 91
+
+
+State 69
+
+   27 expr_n: '(' expr_n ')' .
+
+    $default  reduce using rule 27 (expr_n)
+
+
+State 70
+
+   40 expr_b: '(' expr_b ')' .
+
+    $default  reduce using rule 40 (expr_b)
+
+
+State 71
+
+   11 assignment_n: id '=' expr_n .
+   21 expr_n: expr_n . '+' expr_n
+   22       | expr_n . '-' expr_n
+   23       | expr_n . '/' expr_n
+   24       | expr_n . '%' expr_n
+   25       | expr_n . '*' expr_n
+   26       | expr_n . '^' expr_n
+   41 comp: expr_n . EQ expr_n
+   42     | expr_n . NE expr_n
+   43     | expr_n . GT expr_n
+   44     | expr_n . GE expr_n
+   45     | expr_n . LT expr_n
+   46     | expr_n . LE expr_n
+
+    EQ   shift, and go to state 45
+    NE   shift, and go to state 46
+    GT   shift, and go to state 47
+    GE   shift, and go to state 48
+    LT   shift, and go to state 49
+    LE   shift, and go to state 50
+    '+'  shift, and go to state 51
+    '-'  shift, and go to state 52
+    '/'  shift, and go to state 53
+    '*'  shift, and go to state 54
+    '%'  shift, and go to state 55
+    '^'  shift, and go to state 56
+
+    $default  reduce using rule 11 (assignment_n)
+
+
+State 72
+
+   15 assignment_b: id '=' expr_b .
+   37 expr_b: expr_b . AND expr_b
+   38       | expr_b . OR expr_b
+   47 comp: expr_b . EQ expr_b
+   48     | expr_b . NE expr_b
+
+    AND  shift, and go to state 57
+    OR   shift, and go to state 58
+    EQ   shift, and go to state 59
+    NE   shift, and go to state 60
+
+    $default  reduce using rule 15 (assignment_b)
+
+
+State 73
+
+   20 func: id FUNC_CALL expr_n .
+   21 expr_n: expr_n . '+' expr_n
+   22       | expr_n . '-' expr_n
+   23       | expr_n . '/' expr_n
+   24       | expr_n . '%' expr_n
+   25       | expr_n . '*' expr_n
+   26       | expr_n . '^' expr_n
+
+    '+'  shift, and go to state 51
+    '-'  shift, and go to state 52
+    '/'  shift, and go to state 53
+    '*'  shift, and go to state 54
+    '%'  shift, and go to state 55
+    '^'  shift, and go to state 56
+
+    $default  reduce using rule 20 (func)
+
+
+State 74
+
+   21 expr_n: expr_n . '+' expr_n
+   22       | expr_n . '-' expr_n
+   23       | expr_n . '/' expr_n
+   24       | expr_n . '%' expr_n
+   25       | expr_n . '*' expr_n
+   26       | expr_n . '^' expr_n
+   41 comp: expr_n EQ expr_n .
+
+    '+'  shift, and go to state 51
+    '/'  shift, and go to state 53
+    '*'  shift, and go to state 54
+    '%'  shift, and go to state 55
+    '^'  shift, and go to state 56
+
+    $default  reduce using rule 41 (comp)
+
+
+State 75
+
+   21 expr_n: expr_n . '+' expr_n
+   22       | expr_n . '-' expr_n
+   23       | expr_n . '/' expr_n
+   24       | expr_n . '%' expr_n
+   25       | expr_n . '*' expr_n
+   26       | expr_n . '^' expr_n
+   42 comp: expr_n NE expr_n .
+
+    '+'  shift, and go to state 51
+    '/'  shift, and go to state 53
+    '*'  shift, and go to state 54
+    '%'  shift, and go to state 55
+    '^'  shift, and go to state 56
+
+    $default  reduce using rule 42 (comp)
+
+
+State 76
+
+   21 expr_n: expr_n . '+' expr_n
+   22       | expr_n . '-' expr_n
+   23       | expr_n . '/' expr_n
+   24       | expr_n . '%' expr_n
+   25       | expr_n . '*' expr_n
+   26       | expr_n . '^' expr_n
+   43 comp: expr_n GT expr_n .
+
+    '+'  shift, and go to state 51
+    '/'  shift, and go to state 53
+    '*'  shift, and go to state 54
+    '%'  shift, and go to state 55
+    '^'  shift, and go to state 56
+
+    $default  reduce using rule 43 (comp)
+
+
+State 77
+
+   21 expr_n: expr_n . '+' expr_n
+   22       | expr_n . '-' expr_n
+   23       | expr_n . '/' expr_n
+   24       | expr_n . '%' expr_n
+   25       | expr_n . '*' expr_n
+   26       | expr_n . '^' expr_n
+   44 comp: expr_n GE expr_n .
+
+    '+'  shift, and go to state 51
+    '/'  shift, and go to state 53
+    '*'  shift, and go to state 54
+    '%'  shift, and go to state 55
+    '^'  shift, and go to state 56
+
+    $default  reduce using rule 44 (comp)
+
+
+State 78
+
+   21 expr_n: expr_n . '+' expr_n
+   22       | expr_n . '-' expr_n
+   23       | expr_n . '/' expr_n
+   24       | expr_n . '%' expr_n
+   25       | expr_n . '*' expr_n
+   26       | expr_n . '^' expr_n
+   45 comp: expr_n LT expr_n .
+
+    '+'  shift, and go to state 51
+    '/'  shift, and go to state 53
+    '*'  shift, and go to state 54
+    '%'  shift, and go to state 55
+    '^'  shift, and go to state 56
+
+    $default  reduce using rule 45 (comp)
+
+
+State 79
+
+   21 expr_n: expr_n . '+' expr_n
+   22       | expr_n . '-' expr_n
+   23       | expr_n . '/' expr_n
+   24       | expr_n . '%' expr_n
+   25       | expr_n . '*' expr_n
+   26       | expr_n . '^' expr_n
+   46 comp: expr_n LE expr_n .
+
+    '+'  shift, and go to state 51
+    '/'  shift, and go to state 53
+    '*'  shift, and go to state 54
+    '%'  shift, and go to state 55
+    '^'  shift, and go to state 56
+
+    $default  reduce using rule 46 (comp)
+
+
+State 80
+
+   21 expr_n: expr_n . '+' expr_n
+   21       | expr_n '+' expr_n .
+   22       | expr_n . '-' expr_n
+   23       | expr_n . '/' expr_n
+   24       | expr_n . '%' expr_n
+   25       | expr_n . '*' expr_n
+   26       | expr_n . '^' expr_n
+
+    '/'  shift, and go to state 53
+    '*'  shift, and go to state 54
+    '%'  shift, and go to state 55
+    '^'  shift, and go to state 56
+
+    $default  reduce using rule 21 (expr_n)
+
+
+State 81
+
+   21 expr_n: expr_n . '+' expr_n
+   22       | expr_n . '-' expr_n
+   22       | expr_n '-' expr_n .
+   23       | expr_n . '/' expr_n
+   24       | expr_n . '%' expr_n
+   25       | expr_n . '*' expr_n
+   26       | expr_n . '^' expr_n
+
+    '/'  shift, and go to state 53
+    '*'  shift, and go to state 54
+    '%'  shift, and go to state 55
+    '^'  shift, and go to state 56
+
+    $default  reduce using rule 22 (expr_n)
+
+
+State 82
+
+   21 expr_n: expr_n . '+' expr_n
+   22       | expr_n . '-' expr_n
+   23       | expr_n . '/' expr_n
+   23       | expr_n '/' expr_n .
+   24       | expr_n . '%' expr_n
+   25       | expr_n . '*' expr_n
+   26       | expr_n . '^' expr_n
+
+    '%'  shift, and go to state 55
+    '^'  shift, and go to state 56
+
+    $default  reduce using rule 23 (expr_n)
+
+
+State 83
+
+   21 expr_n: expr_n . '+' expr_n
+   22       | expr_n . '-' expr_n
+   23       | expr_n . '/' expr_n
+   24       | expr_n . '%' expr_n
+   25       | expr_n . '*' expr_n
+   25       | expr_n '*' expr_n .
+   26       | expr_n . '^' expr_n
+
+    '%'  shift, and go to state 55
+    '^'  shift, and go to state 56
+
+    $default  reduce using rule 25 (expr_n)
+
+
+State 84
+
+   21 expr_n: expr_n . '+' expr_n
+   22       | expr_n . '-' expr_n
+   23       | expr_n . '/' expr_n
+   24       | expr_n . '%' expr_n
+   24       | expr_n '%' expr_n .
+   25       | expr_n . '*' expr_n
+   26       | expr_n . '^' expr_n
+
+    '^'  shift, and go to state 56
+
+    $default  reduce using rule 24 (expr_n)
+
+
+State 85
+
+   21 expr_n: expr_n . '+' expr_n
+   22       | expr_n . '-' expr_n
+   23       | expr_n . '/' expr_n
+   24       | expr_n . '%' expr_n
+   25       | expr_n . '*' expr_n
+   26       | expr_n . '^' expr_n
+   26       | expr_n '^' expr_n .
+
+    $default  reduce using rule 26 (expr_n)
+
+
+State 86
+
+   37 expr_b: expr_b . AND expr_b
+   37       | expr_b AND expr_b .
+   38       | expr_b . OR expr_b
+   47 comp: expr_b . EQ expr_b
+   48     | expr_b . NE expr_b
+
+    $default  reduce using rule 37 (expr_b)
+
+
+State 87
+
+   37 expr_b: expr_b . AND expr_b
+   38       | expr_b . OR expr_b
+   38       | expr_b OR expr_b .
+   47 comp: expr_b . EQ expr_b
+   48     | expr_b . NE expr_b
+
+    AND  shift, and go to state 57
+
+    $default  reduce using rule 38 (expr_b)
+
+
+State 88
+
+   37 expr_b: expr_b . AND expr_b
+   38       | expr_b . OR expr_b
+   47 comp: expr_b . EQ expr_b
+   47     | expr_b EQ expr_b .
+   48     | expr_b . NE expr_b
+
+    AND  shift, and go to state 57
+    OR   shift, and go to state 58
+
+    EQ  error (nonassociative)
+    NE  error (nonassociative)
+
+    $default  reduce using rule 47 (comp)
+
+
+State 89
+
+   37 expr_b: expr_b . AND expr_b
+   38       | expr_b . OR expr_b
+   47 comp: expr_b . EQ expr_b
+   48     | expr_b . NE expr_b
+   48     | expr_b NE expr_b .
+
+    AND  shift, and go to state 57
+    OR   shift, and go to state 58
+
+    EQ  error (nonassociative)
+    NE  error (nonassociative)
+
+    $default  reduce using rule 48 (comp)
+
+
+State 90
+
+   12 assignment_n: FUNCTION '=' expr_n .
+   21 expr_n: expr_n . '+' expr_n
+   22       | expr_n . '-' expr_n
+   23       | expr_n . '/' expr_n
+   24       | expr_n . '%' expr_n
+   25       | expr_n . '*' expr_n
+   26       | expr_n . '^' expr_n
+
+    '+'  shift, and go to state 51
+    '-'  shift, and go to state 52
+    '/'  shift, and go to state 53
+    '*'  shift, and go to state 54
+    '%'  shift, and go to state 55
+    '^'  shift, and go to state 56
+
+    $default  reduce using rule 12 (assignment_n)
+
+
+State 91
+
+   11 assignment_n: id '=' expr_n .
+   21 expr_n: expr_n . '+' expr_n
+   22       | expr_n . '-' expr_n
+   23       | expr_n . '/' expr_n
+   24       | expr_n . '%' expr_n
+   25       | expr_n . '*' expr_n
+   26       | expr_n . '^' expr_n
+
+    '+'  shift, and go to state 51
+    '-'  shift, and go to state 52
+    '/'  shift, and go to state 53
+    '*'  shift, and go to state 54
+    '%'  shift, and go to state 55
+    '^'  shift, and go to state 56
+
+    $default  reduce using rule 11 (assignment_n)
